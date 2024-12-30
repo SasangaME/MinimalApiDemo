@@ -11,6 +11,18 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="MongoDB.Driver" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Enums\" />
+    <Folder Include="Common\Models\" />
+    <Folder Include="Features\Pet\" />
+    <Folder Include="Config\" />
+    <Folder Include="Database\" />
+    <Folder Include="Filters\" />
+    <Folder Include="Middleware\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 
 </Project>
