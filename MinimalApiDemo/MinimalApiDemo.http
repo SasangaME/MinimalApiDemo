@@ -1,5 +1,17 @@
-@MinimalApiDemo_HostAddress = http://localhost:5093
+@base_url = http://localhost:5093
 
-
+GET {{base_url}}
 
 ###
+
+GET {{base_url}}/api/pets
+Accept: application/json
+
+###
+POST {{base_url}}/api/pets
+Content-Type: application/json
+
+{
+  "name": "Sophie",
+  "gender": 2
+}
