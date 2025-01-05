@@ -15,10 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Enums\" />
     <Folder Include="Common\Models\" />
-    <Folder Include="Features\Pet\" />
-    <Folder Include="Config\" />
     <Folder Include="Database\" />
     <Folder Include="Filters\" />
     <Folder Include="Middleware\" />
