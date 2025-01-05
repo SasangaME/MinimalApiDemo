@@ -11,7 +11,7 @@ public static class PetEndpoints
         
         petGroup.MapGet("/", () => Results.Ok(GetPets()));
 
-        petGroup.MapGet("/api/pets/{id:int}", (int id) =>
+        petGroup.MapGet("/{id:int}", (int id) =>
         {
             var pet = GetPetById(id);
             return pet is not null ? Results.Ok(pet) : Results.NotFound();
