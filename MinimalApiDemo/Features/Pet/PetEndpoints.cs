@@ -9,7 +9,7 @@ public static class PetEndpoints
         var petGroup = app.MapGroup("/api/pets")
             .WithTags("Pets");
         
-        petGroup.MapGet("/api/pets", () => Results.Ok(GetPets()));
+        petGroup.MapGet("/", () => Results.Ok(GetPets()));
 
         petGroup.MapGet("/api/pets/{id:int}", (int id) =>
         {
@@ -17,7 +17,7 @@ public static class PetEndpoints
             return pet is not null ? Results.Ok(pet) : Results.NotFound();
         });
 
-        petGroup.MapPost("/api/pets", (PetDto pet) =>
+        petGroup.MapPost("/", (PetDto pet) =>
         {
             var newPet = CreatePet(pet);
             return Results.Created($"/api/pets/{newPet.Id}", newPet);
