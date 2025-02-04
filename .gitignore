@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /.idea/.idea.MinimalApiDemo/.idea
+/MinimalApiDemo/build_output
