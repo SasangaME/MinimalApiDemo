@@ -2,7 +2,7 @@
 
 namespace MinimalApiDemo.Features.Pet;
 
-public record PetDto
+public class PetDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

@@ -1,4 +1,4 @@
-﻿using MinimalApiDemo.Common.Enums;
+﻿using MediatR;
 
 namespace MinimalApiDemo.Features.Pet;
 
@@ -8,39 +8,23 @@ public static class PetEndpoints
     {
         var petGroup = app.MapGroup("/api/pets")
             .WithTags("Pets");
-        
-        petGroup.MapGet("/", () => Results.Ok(GetPets()));
 
-        petGroup.MapGet("/{id:int}", (int id) =>
+        petGroup.MapGet("/", async (IMediator mediator) =>
         {
-            var pet = GetPetById(id);
-            return pet is not null ? Results.Ok(pet) : Results.NotFound();
+            var pets = await mediator.Send(new GetPetsQuery());
+            return Results.Ok(pets);
         });
 
-        petGroup.MapPost("/", (PetDto pet) =>
+        petGroup.MapGet("/{id:int}", async (IMediator mediator, int id) =>
         {
-            var newPet = CreatePet(pet);
-            return Results.Created($"/api/pets/{newPet.Id}", newPet);
+            var pet = await mediator.Send(new GetPetByIdQuery(id));
+            return Results.Ok(pet);
         });
-    }
 
-    private static IEnumerable<PetDto> GetPets()
-    {
-        return new List<PetDto>
+        petGroup.MapPost("/", async (IMediator mediator, CreatePetCommand petCommand) =>
         {
-            new PetDto { Id = 1, Name = "Pippa", Gender = Gender.Female },
-            new PetDto { Id = 2, Name = "Ollie", Gender = Gender.Male }
-        };
-    }
-
-    private static PetDto? GetPetById(int id)
-    {
-        return GetPets().FirstOrDefault(p => p.Id == id);
-    }
-
-    private static PetDto CreatePet(PetDto pet)
-    {
-        pet.Id = GetPets().Max(p => p.Id) + 1;
-        return pet;
+            petCommand.Id = await mediator.Send(petCommand);
+            return Results.Created($"/pets/{petCommand.Id}", petCommand);
+        });
     }
 }

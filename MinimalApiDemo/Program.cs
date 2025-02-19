@@ -1,6 +1,11 @@
+using Microsoft.Win32;
 using MinimalApiDemo.Config;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
 
 // Add services to the container.
 
