@@ -2,8 +2,11 @@
 
 namespace MinimalApiDemo.Features.Pet;
 
-public class CreatePetCommand : PetDto, IRequest<int>;
+public class CreatePetCommand : Pet, IRequest<string>;
 
-public class UpdatePetCommand : PetDto, IRequest<Unit>;
+public class UpdatePetCommand : Pet, IRequest<Unit>;
 
-public class DeletePetCommand : PetDto, IRequest<Unit>;
+public class DeletePetCommand : IRequest<Unit>
+{
+    public string Id { get; set; }
+}

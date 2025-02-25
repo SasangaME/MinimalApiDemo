@@ -15,7 +15,7 @@ public static class PetEndpoints
             return Results.Ok(pets);
         });
 
-        petGroup.MapGet("/{id:int}", async (IMediator mediator, int id) =>
+        petGroup.MapGet("/{id:int}", async (IMediator mediator, string id) =>
         {
             var pet = await mediator.Send(new GetPetByIdQuery(id));
             return Results.Ok(pet);

@@ -12,6 +12,19 @@ POST {{base_url}}/api/pets
 Content-Type: application/json
 
 {
-  "name": "Sophie",
-  "gender": 2
+  "Name": "Buddy",
+  "Breed": {
+    "Name": "Golden Retriever",
+    "CommonName": "Golden",
+    "Description": "Friendly, intelligent, and devoted."
+  },
+  "Color": {
+    "GeneralColor": "Golden",
+    "Body": "Light golden",
+    "Face": "Cream",
+    "Legs": "Golden",
+    "Tail": "Golden"
+  },
+  "Weight": 30.5,
+  "BirthDate": "2022-06-15"
 }

@@ -2,6 +2,6 @@
 
 namespace MinimalApiDemo.Features.Pet;
 
-public record GetPetsQuery : IRequest<IEnumerable<PetDto>>;
+public record GetPetsQuery : IRequest<IEnumerable<Pet>>;
 
-public record GetPetByIdQuery(int Id) : IRequest<PetDto>;
+public record GetPetByIdQuery(string Id) : IRequest<Pet>;

@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MinimalApiDemo.Features.Pet;
+using MongoDB.Driver;
 
 namespace MinimalApiDemo.Database;
 
@@ -14,4 +15,6 @@ public class DbContext
         var client = new MongoClient(connectionString);
         _database = client.GetDatabase(databaseName);
     }
+    
+    public IMongoCollection<Pet> Pets => _database.GetCollection<Pet>("pets");
 }
