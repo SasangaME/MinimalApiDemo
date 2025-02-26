@@ -1,39 +1,26 @@
 ﻿using MediatR;
-using MinimalApiDemo.Common.Enums;
 
 namespace MinimalApiDemo.Features.Pet;
 
-public class GetPetsHandler : IRequestHandler<GetPetsQuery, IEnumerable<PetDto>>
+public class GetPetsHandler(IPetReadRepository petReadRepository) : IRequestHandler<GetPetsQuery, IEnumerable<Pet>>
 {
-    public Task<IEnumerable<PetDto>> Handle(GetPetsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Pet>> Handle(GetPetsQuery request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(PetsQueryHelper.GetPets());
+        var pets = await petReadRepository.FindAll(cancellationToken);
+        return pets;
     }
 }
 
-public class GetPetByIdHandler : IRequestHandler<GetPetByIdQuery, PetDto>
+public class GetPetByIdHandler(IPetReadRepository petReadRepository) : IRequestHandler<GetPetByIdQuery, Pet>
 {
-    public Task<PetDto> Handle(GetPetByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Pet> Handle(GetPetByIdQuery request, CancellationToken cancellationToken)
     {
-        var pet = PetsQueryHelper.GetPets().FirstOrDefault(p => p.Id == request.Id);
+        var pet = await petReadRepository.FindById(request.Id, cancellationToken);
         if (pet is null)
         {
             Results.NotFound($"pet is not found for id: {request.Id}");
         }
 
-        return Task.FromResult(pet);
-    }
-}
-
-public static class PetsQueryHelper
-{
-    public static IEnumerable<PetDto> GetPets()
-    {
-        return new List<PetDto>
-        {
-            new PetDto { Id = 1, Name = "Fluffy", Gender = Gender.Male },
-            new PetDto { Id = 2, Name = "Whiskers", Gender = Gender.Female },
-            new PetDto { Id = 3, Name = "Bubbles", Gender = Gender.Female }
-        };
+        return pet;
     }
 }

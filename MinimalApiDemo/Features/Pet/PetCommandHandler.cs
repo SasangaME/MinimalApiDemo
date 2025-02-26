@@ -2,30 +2,41 @@
 
 namespace MinimalApiDemo.Features.Pet;
 
-public class CreatePetCommandHandler : IRequestHandler<CreatePetCommand, int>
+public class CreatePetCommandHandler(IPetWriteRepository petWriteRepository) : IRequestHandler<CreatePetCommand, string>
 {
-    public async Task<int> Handle(CreatePetCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreatePetCommand request, CancellationToken cancellationToken)
     {
-        // Save the pet to the database
-        return 1;
+        var petId = await petWriteRepository.Create(request, cancellationToken);
+        return petId;
     }
 }
 
-public class UpdatePetCommandHandler : IRequestHandler<UpdatePetCommand, Unit>
+public class UpdatePetCommandHandler(IPetWriteRepository petWriteRepository, IMediator mediator) : IRequestHandler<UpdatePetCommand, Unit>
 {
     public async Task<Unit> Handle(UpdatePetCommand request, CancellationToken cancellationToken)
     {
-        // Update the pet in the database
+        var existingPet = await mediator.Send(new GetPetByIdQuery(request.Id), cancellationToken);
+        if(existingPet is null)
+        {
+            Results.NotFound($"Pet not found for id: {request.Id}");
+        }
+
+        existingPet.Name = request.Name;
+        existingPet.Breed = request.Breed;
+        existingPet.Color = request.Color;
+        existingPet.Weight = request.Weight;
+        existingPet.BirthDate = request.BirthDate;
+        await petWriteRepository.Update(request.Id, existingPet, cancellationToken);
         return Unit.Value;
     }
 }
 
 
-public class DeletePetCommandHandler : IRequestHandler<DeletePetCommand, Unit>
+public class DeletePetCommandHandler(IPetWriteRepository petWriteRepository) : IRequestHandler<DeletePetCommand, Unit>
 {
     public async Task<Unit> Handle(DeletePetCommand request, CancellationToken cancellationToken)
     {
-        // Delete the pet from the database
+        await petWriteRepository.Delete(request.Id , cancellationToken);
         return Unit.Value;
     }
 }
